@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private bool started;
     private int weightsLeft;
 
     //For Next Weight
@@ -55,12 +56,25 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject gameOverScreen;
 
+    private int highscore;
+
+    [HideInInspector]
+    public bool newHighscore = false;
+
     private void FixedUpdate()
     {
         if (displayScore != score)
         {
             displayScore += 25;
             scoreText.text = displayScore.ToString();
+        }
+    }
+    
+    public void StartTimer()
+    {
+        if (!started)
+        {
+            started = true;
         }
     }
 
@@ -81,9 +95,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        highscore = PlayerPrefs.GetInt("Highscore", 0);
         requiredProgress = 3000;
         currentProgress = 0;
-        weightsLeft = 1;
+        weightsLeft = 5;
         weightsText.text = weightsLeft.ToString();
         timeLimit = 10f;
         currentTime = timeLimit;
@@ -92,7 +107,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!paused)
+        if (!paused && started)
         {
             currentTime = Mathf.Max(currentTime - Time.deltaTime, 0f);
 
@@ -147,6 +162,12 @@ public class GameManager : MonoBehaviour
     {
         SoundManager.instance.PlayRandomized(gameOverSound);
         gameOverScreen.SetActive(true);
+        if (score > highscore)
+        {
+            newHighscore = true;
+            PlayerPrefs.SetInt("Highscore", score);
+            PlayerPrefs.Save();
+        }
     }
 
     public void AddScore(int amount)

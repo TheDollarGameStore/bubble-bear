@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftArrow) && targetPos.x > -32)
         {
+            GameManager.instance.StartTimer();
             targetPos += Vector2.left * 16f;
             sr.flipX = true;
             position -= 1;
@@ -41,12 +42,14 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightArrow) && targetPos.x < 32)
         {
+            GameManager.instance.StartTimer();
             targetPos += Vector2.right * 16f;
             sr.flipX = false;
             position += 1;
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) {
+            GameManager.instance.StartTimer();
             MakeMove();
         }
     }

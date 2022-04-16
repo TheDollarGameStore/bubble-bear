@@ -94,7 +94,7 @@ public class Orb : MonoBehaviour
             case 7:
                 return 3500;
             default:
-                return 6000;
+                return 100;
         }
     }
 }
